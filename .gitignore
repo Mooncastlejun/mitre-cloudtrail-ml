@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ipynb_checkpoints/
+*.egg-info/
+
+# Data & artifacts (large / generated)
+data/raw/
+data/sample/*.jsonl
+artifacts/
+reports/*.json
+
+# Notebook outputs are stripped; keep the notebooks themselves
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
