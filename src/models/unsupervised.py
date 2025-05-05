@@ -36,3 +36,23 @@ class IsolationForestModel:
         X = self.scaler.transform(behavioral_matrix(df))
         # sklearn: higher score_samples = more normal; invert so high = anomalous
         return self.norm(-self.model.score_samples(X))
+
+
+class LOFModel:
+    name = "lof"
+
+    def __init__(self, contamination: float = 0.43, n_neighbors: int = 30):
+        self.scaler = StandardScaler()
+        self.model = LocalOutlierFactor(
+            n_neighbors=n_neighbors, contamination=contamination, novelty=True)
+        self.norm = Score01()
+
+    def fit(self, df: pd.DataFrame) -> "LOFModel":
+        X = self.scaler.fit_transform(behavioral_matrix(df))
+        self.model.fit(X)
+        self.norm.fit(-self.model.score_samples(X))
+        return self
+
+    def score(self, df: pd.DataFrame) -> np.ndarray:
+        X = self.scaler.transform(behavioral_matrix(df))
+        return self.norm(-self.model.score_samples(X))
