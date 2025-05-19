@@ -45,3 +45,12 @@ def evaluate_scores(y_true: np.ndarray, scores: np.ndarray, contamination: float
         "best_f1": round(best_f1, 3),
         "threshold": round(float(thr), 4),
     }
+
+
+def comparison_table(results: dict[str, dict]) -> str:
+    cols = ["pr_auc", "roc_auc", "precision@thr", "recall@thr", "f1@thr", "best_f1"]
+    header = f"{'model':<18} " + " ".join(f"{c:>13}" for c in cols)
+    lines = [header, "-" * len(header)]
+    for name, m in sorted(results.items(), key=lambda kv: kv[1].get("pr_auc", 0), reverse=True):
+        lines.append(f"{name:<18} " + " ".join(f"{m.get(c, 0):>13}" for c in cols))
+    return "\n".join(lines)
